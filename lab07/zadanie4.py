@@ -11,9 +11,7 @@ with open('zamowienia.csv', newline='', encoding="utf8", errors="ignore") as fil
         writer_polska.writerow(header)
         writer_niemcy.writerow(header)
         for row in reader:
-            row[4] = row[4].replace(',', '.').replace(' ', '').replace(' zł', '').replace('z', '')
-            row[2] = datetime.datetime.strptime(row[2], '%d.%m.%Y').strftime('%Y-%m-%d')
             if row[0] == 'Polska':
-                writer_polska.writerow(row)
+                writer_polska.writerow(map(lambda x: datetime.datetime.strptime(x, '%d.%m.%Y').strftime('%Y-%m-%d') if x == row[2] else float(x.replace(',', '.').replace(' ', '').replace(' zł', '').replace('z', '')) if x == row[4] else x, row))
             elif row[0] == 'Niemcy':
-                writer_niemcy.writerow(row)
+                writer_niemcy.writerow(map(lambda x: datetime.datetime.strptime(x, '%d.%m.%Y').strftime('%Y-%m-%d') if x == row[2] else float(x.replace(',', '.').replace(' ', '').replace(' zł', '').replace('z', '')) if x == row[4] else x, row))
